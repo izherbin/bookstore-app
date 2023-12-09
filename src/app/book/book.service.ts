@@ -17,7 +17,7 @@ export class BookService {
     return createBook.save()
   }
 
-  async findAll(limit: number, skip: number) {
+  async findAll(skip: number, limit: number) {
     const booksCount = await this.bookModel.find().countDocuments()
     const books = await this.bookModel
       .find()

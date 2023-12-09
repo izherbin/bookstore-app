@@ -14,11 +14,11 @@ export class Book {
   @Prop()
   title: string
 
-  @Field(() => Float)
+  @Field(() => String)
   @Prop()
   description: string
 
-  @Field(() => Number)
+  @Field(() => Float)
   @Prop()
   price: number
 

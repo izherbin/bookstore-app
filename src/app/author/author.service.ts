@@ -17,7 +17,7 @@ export class AuthorService {
     return createAuthor.save()
   }
 
-  async findAll(limit: number, skip: number) {
+  async findAll(skip: number, limit: number) {
     const authorsCount = await this.authorModel.find().countDocuments()
     const authors = await this.authorModel.find().skip(skip).limit(limit)
 

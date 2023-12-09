@@ -11,7 +11,7 @@ export class UserResolver {
 
   @Mutation(() => User)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput)
+    return this.userService.createUser(createUserInput)
   }
 
   @Query(() => [User], { name: 'users' })

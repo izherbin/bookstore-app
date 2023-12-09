@@ -6,20 +6,24 @@ import { UpdateBookInput } from './dto/update-book.input'
 import { Schema as MongooSchema } from 'mongoose'
 import { GetPaginatedArgs } from '../common/dto/get-paginated.args'
 import { GetPaginatedSubDocumentsArgs } from '../common/dto/get-paginated-sub-document.args'
+import { UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from '../auth/jwt-auth.guards'
 
 @Resolver(() => Book)
 export class BookResolver {
   constructor(private readonly bookService: BookService) {}
 
   @Mutation(() => Book)
+  @UseGuards(JwtAuthGuard)
   createBook(@Args('createBookInput') createBookInput: CreateBookInput) {
     return this.bookService.create(createBookInput)
   }
 
-  @Query(() => [GetBooksPaginatedResponse], { name: 'allBook' })
-  findAll(@Args() args: GetPaginatedArgs) {
+  @Query(() => GetBooksPaginatedResponse, { name: 'allBook' })
+  async findAll(@Args() args: GetPaginatedArgs) {
     const { skip, limit } = args
-    return this.bookService.findAll(skip, limit)
+    const res = await this.bookService.findAll(skip, limit)
+    return res
   }
 
   @Query(() => Book, { name: 'book' })
@@ -29,11 +33,13 @@ export class BookResolver {
   }
 
   @Mutation(() => Book)
+  @UseGuards(JwtAuthGuard)
   updateBook(@Args('updateBookInput') updateBookInput: UpdateBookInput) {
     return this.bookService.updateBook(updateBookInput._id, updateBookInput)
   }
 
   @Mutation(() => Book)
+  @UseGuards(JwtAuthGuard)
   removeBook(
     @Args('id', { type: () => String }) id: MongooSchema.Types.ObjectId
   ) {

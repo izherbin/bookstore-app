@@ -16,7 +16,7 @@ type GetAuthorsPaginatedResponse {
 type Book {
   _id: String!
   title: String!
-  description: Float!
+  description: String!
   price: Float!
   coverImage: String!
   isbn: String!
@@ -38,13 +38,18 @@ type User {
   books: [Book!]!
 }
 
+type LoginUserResponce {
+  user: User!
+  authToken: String!
+}
+
 type Query {
   getHello: String!
   users: [User!]!
 
   """This will be like getting user profile by his id"""
   userById(id: String!): User!
-  allBook(limit: Int = 10, skip: Int = 0): [GetBooksPaginatedResponse!]!
+  allBook(limit: Int = 10, skip: Int = 0): GetBooksPaginatedResponse!
   book(limit: Int = 10, skip: Int = 0, _id: String!): Book!
   allAuthor(limit: Int = 10, skip: Int = 0): GetAuthorsPaginatedResponse!
   author(id: String!): Author!
@@ -60,6 +65,8 @@ type Mutation {
   createAuthor(createAuthorInput: CreateAuthorInput!): Author!
   updateAuthor(updateAuthorInput: UpdateAuthorInput!): Author!
   removeAuthor(id: String!): Author!
+  login(loginUserInput: LoginUserInput!): LoginUserResponce!
+  signup(signupInput: CreateUserInput!): User!
 }
 
 input CreateUserInput {
@@ -103,4 +110,9 @@ input CreateAuthorInput {
 input UpdateAuthorInput {
   name: String
   _id: String!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
 }
